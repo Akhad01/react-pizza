@@ -8,21 +8,36 @@ import PizzaBlock from "../PizzaBlock";
 const Home = () => {
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [categoriesId, setCategoriesId] = React.useState(0);
+  const [sortType, setSortType] = React.useState({
+    name: "популярность",
+    sortProperty: "rating",
+  });
+
+  console.log(sortType);
 
   React.useEffect(() => {
-    fetch("https://6340350ed1fcddf69cb3e3ea.mockapi.io/items")
+    setIsLoading(true);
+    fetch(
+      `https://6340350ed1fcddf69cb3e3ea.mockapi.io/items?${
+        categoriesId > 0 ? `category=${categoriesId}` : ""
+      }&sortBy=${sortType.sortProperty}`
+    )
       .then((item) => item.json())
       .then((json) => {
         setItems(json);
         setIsLoading(false);
         window.scrollTo(0, 0);
       });
-  }, []);
+  }, [categoriesId, sortType]);
   return (
     <>
       <div className="content__top">
-        <Categories />
-        <Sort />
+        <Categories
+          value={categoriesId}
+          onChangeCategory={(i) => setCategoriesId(i)}
+        />
+        <Sort value={sortType} onChangeSort={(i) => setSortType(i)} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
