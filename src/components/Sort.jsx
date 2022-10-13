@@ -3,16 +3,28 @@ import { useState } from "react";
 function Sort({ value, onChangeSort }) {
   const list = [
     {
-      name: "популярность",
+      name: "популярность DESC",
       sortProperty: "rating",
     },
     {
-      name: "цена",
+      name: "популярность ASC",
+      sortProperty: "-rating",
+    },
+    {
+      name: "цена DESC",
       sortProperty: "price",
     },
     {
-      name: "алфавит",
+      name: "цена ASC",
+      sortProperty: "-price",
+    },
+    {
+      name: "алфавит DESC",
       sortProperty: "title",
+    },
+    {
+      name: "алфавит ASC",
+      sortProperty: "-title",
     },
   ];
   const [isVisible, setIsVisible] = useState(false);

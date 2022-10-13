@@ -5,7 +5,7 @@ import Sort from "../Sort";
 import Skeleton from "../PizzaBlock/Skeleton";
 import PizzaBlock from "../PizzaBlock";
 
-const Home = () => {
+const Home = ({ searchValue }) => {
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [categoriesId, setCategoriesId] = React.useState(0);
@@ -14,14 +14,16 @@ const Home = () => {
     sortProperty: "rating",
   });
 
-  console.log(sortType);
-
   React.useEffect(() => {
     setIsLoading(true);
+
+    const category = categoriesId > 0 ? `category=${categoriesId}` : "";
+    const sortBy = sortType.sortProperty.replace("-", "");
+    const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
+    const search = searchValue ? `&search=${searchValue}` : "";
+
     fetch(
-      `https://6340350ed1fcddf69cb3e3ea.mockapi.io/items?${
-        categoriesId > 0 ? `category=${categoriesId}` : ""
-      }&sortBy=${sortType.sortProperty}`
+      `https://6340350ed1fcddf69cb3e3ea.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}${search}`
     )
       .then((item) => item.json())
       .then((json) => {
@@ -29,7 +31,13 @@ const Home = () => {
         setIsLoading(false);
         window.scrollTo(0, 0);
       });
-  }, [categoriesId, sortType]);
+  }, [categoriesId, sortType, searchValue]);
+
+  const pizzas = items.map((item) => <PizzaBlock {...item} key={item.id} />);
+  const skeletons = [...new Array(6)].map((_, index) => (
+    <Skeleton key={index} />
+  ));
+
   return (
     <>
       <div className="content__top">
@@ -40,11 +48,7 @@ const Home = () => {
         <Sort value={sortType} onChangeSort={(i) => setSortType(i)} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">
-        {isLoading
-          ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-          : items.map((item) => <PizzaBlock {...item} key={item.id} />)}
-      </div>
+      <div className="content__items">{isLoading ? skeletons : pizzas}</div>
     </>
   );
 };
