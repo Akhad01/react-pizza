@@ -1,27 +1,46 @@
 import React from "react";
 import { BsSearch } from "react-icons/bs";
 import { CgClose } from "react-icons/cg";
+import debounce from "lodash.debounce";
 import { AppContext } from "../../App";
 import styles from "./Search.module.scss";
 
 const Search = () => {
-  const { searchValue, setSearchValue } = React.useContext(AppContext);
+  const [value, setValue] = React.useState("");
+  const { setSearchValue } = React.useContext(AppContext);
+  const inputRef = React.useRef();
+
+  const onClickClear = () => {
+    setSearchValue("");
+    setValue("");
+    inputRef.current.focus();
+  };
+
+  const updateSearchValue = React.useCallback(
+    debounce((str) => {
+      console.log(str);
+      setSearchValue(str);
+    }, 500),
+    []
+  );
+
+  const onChangeInput = (event) => {
+    setValue(event.target.value);
+    updateSearchValue(event.target.value);
+  };
+
   return (
     <div className={styles.wrapper}>
       <BsSearch className={styles.icon} />
       <input
-        value={searchValue}
-        onChange={(event) => setSearchValue(event.target.value)}
+        ref={inputRef}
+        value={value}
+        onChange={onChangeInput}
         className={styles.input}
         type="text"
         placeholder="Поиск пиццы..."
       />
-      {searchValue && (
-        <CgClose
-          className={styles.iconClose}
-          onClick={() => setSearchValue("")}
-        />
-      )}
+      {value && <CgClose className={styles.iconClose} onClick={onClickClear} />}
     </div>
   );
 };

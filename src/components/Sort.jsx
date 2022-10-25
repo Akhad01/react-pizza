@@ -1,36 +1,42 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setSort } from "../redux/slices/filterSlice";
 
-function Sort({ value, onChangeSort }) {
-  const list = [
-    {
-      name: "популярность DESC",
-      sortProperty: "rating",
-    },
-    {
-      name: "популярность ASC",
-      sortProperty: "-rating",
-    },
-    {
-      name: "цена DESC",
-      sortProperty: "price",
-    },
-    {
-      name: "цена ASC",
-      sortProperty: "-price",
-    },
-    {
-      name: "алфавит DESC",
-      sortProperty: "title",
-    },
-    {
-      name: "алфавит ASC",
-      sortProperty: "-title",
-    },
-  ];
+const list = [
+  {
+    name: "популярность DESC",
+    sortProperty: "rating",
+  },
+  {
+    name: "популярность ASC",
+    sortProperty: "-rating",
+  },
+  {
+    name: "цена DESC",
+    sortProperty: "price",
+  },
+  {
+    name: "цена ASC",
+    sortProperty: "-price",
+  },
+  {
+    name: "алфавит DESC",
+    sortProperty: "title",
+  },
+  {
+    name: "алфавит ASC",
+    sortProperty: "-title",
+  },
+];
+
+function Sort() {
+  const dispatch = useDispatch();
+  const sort = useSelector((state) => state.filter.sort);
+
   const [isVisible, setIsVisible] = useState(false);
 
-  const onClickListItem = (i) => {
-    onChangeSort(i);
+  const onClickListItem = (obj) => {
+    dispatch(setSort(obj));
     setIsVisible(false);
   };
   return (
@@ -49,7 +55,7 @@ function Sort({ value, onChangeSort }) {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setIsVisible(!isVisible)}>{value.name}</span>
+        <span onClick={() => setIsVisible(!isVisible)}>{sort.name}</span>
       </div>
       {isVisible && (
         <div className="sort__popup">
@@ -58,7 +64,7 @@ function Sort({ value, onChangeSort }) {
               <li
                 onClick={() => onClickListItem(obj)}
                 className={
-                  value.sortProperty === obj.sortProperty ? "active" : ""
+                  sort.sortProperty === obj.sortProperty ? "active" : ""
                 }
                 key={index}
               >

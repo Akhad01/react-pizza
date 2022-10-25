@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import React from "react";
+// import { useSelector, useDispatch } from "react-redux";
 import Header from "./components/Headers";
 import Home from "./components/pages/Home";
 import NotFound from "./components/pages/NotFound";
@@ -7,8 +8,6 @@ import Cart from "./components/pages/Cart";
 import "./scss/app.scss";
 
 export const AppContext = React.createContext("");
-
-console.log(AppContext);
 
 function App() {
   const [searchValue, setSearchValue] = React.useState("");
