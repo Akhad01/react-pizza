@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { BsSearch } from "react-icons/bs";
 import { CgClose } from "react-icons/cg";
 import debounce from "lodash.debounce";
+
 import { AppContext } from "../../App";
 import styles from "./Search.module.scss";
 
@@ -18,7 +20,6 @@ const Search = () => {
 
   const updateSearchValue = React.useCallback(
     debounce((str) => {
-      console.log(str);
       setSearchValue(str);
     }, 500),
     []

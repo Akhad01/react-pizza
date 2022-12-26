@@ -14,18 +14,23 @@ export const filterSlice = createSlice({
   initialState,
   reducers: {
     setCategoriesId(state, action) {
-      console.log("state", state.categoriesId);
       state.categoriesId = action.payload;
     },
     setSort(state, action) {
-      state.sortType = action.payload;
+      state.sort = action.payload;
     },
     setCurrentPage(state, action) {
       state.currentPage = action.payload;
     },
+    setFilters(state, action) {
+      state.currentPage = Number(action.payload.currentPage);
+      state.categoriesId = Number(action.payload.categoriesId);
+      state.sort.sortProperty = action.payload.sortProperty;
+    },
   },
 });
 
-export const { setCategoriesId, setSort, setCurrentPage } = filterSlice.actions;
+export const { setCategoriesId, setSort, setCurrentPage, setFilters } =
+  filterSlice.actions;
 
 export default filterSlice.reducer;
