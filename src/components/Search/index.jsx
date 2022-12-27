@@ -3,24 +3,25 @@ import React from "react";
 import { BsSearch } from "react-icons/bs";
 import { CgClose } from "react-icons/cg";
 import debounce from "lodash.debounce";
+import { useDispatch } from "react-redux";
 
-import { AppContext } from "../../App";
 import styles from "./Search.module.scss";
+import { setsSearchValue } from "../../redux/slices/filterSlice";
 
 const Search = () => {
+  const dispatch = useDispatch();
   const [value, setValue] = React.useState("");
-  const { setSearchValue } = React.useContext(AppContext);
   const inputRef = React.useRef();
 
   const onClickClear = () => {
-    setSearchValue("");
+    dispatch(setsSearchValue(""));
     setValue("");
     inputRef.current.focus();
   };
 
   const updateSearchValue = React.useCallback(
     debounce((str) => {
-      setSearchValue(str);
+      dispatch(setsSearchValue(str));
     }, 500),
     []
   );

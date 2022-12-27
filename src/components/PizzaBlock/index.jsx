@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
 import { addItem } from "../../redux/slices/cardSlice";
+import { selectCardItem } from "../../redux/slices/cardSlice";
 
 function PizzaBlock({ name, id, price, imageUrl, sizes, types }) {
   const dispatch = useDispatch();
 
-  const cardItem = useSelector((state) =>
-    state.card.item.find((obj) => obj.id === id)
-  );
+  const cardItem = useSelector(selectCardItem(id));
 
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setactiveSize] = useState(0);

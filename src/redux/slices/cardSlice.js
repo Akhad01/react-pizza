@@ -44,3 +44,7 @@ export const cardSlice = createSlice({
 export const { addItem, removeItem, minusItem, clearItems } = cardSlice.actions;
 
 export default cardSlice.reducer;
+
+export const selectCard = (state) => state.card;
+export const selectCardItem = (id) => (state) =>
+  state.card.item.find((obj) => obj.id === id);
